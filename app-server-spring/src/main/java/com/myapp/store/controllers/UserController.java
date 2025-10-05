@@ -9,6 +9,7 @@ import com.myapp.store.mappers.UserMapper;
 import com.myapp.store.repositories.UserRepository;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import java.util.Set;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/users")
+@Slf4j
 public class UserController {
     private final UserRepository userRepository;
 
@@ -58,12 +60,12 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserCreateRequestDto userCreateRequestDto, UriComponentsBuilder uriBuilder) {
 
-        System.out.println("Creating user: " + userCreateRequestDto);
+        log.info("Creating user: {} ", userCreateRequestDto);
 
         var userEntity = userMapper.toEntity(userCreateRequestDto);
 
         userEntity.setPassword(passwordEncoder.encode(userCreateRequestDto.getPassword()));
-        userEntity.setRoles(userCreateRequestDto.getRole());
+        userEntity.setRoles(Role.USER);
 
         var user = userRepository.save(userEntity);
         var uri = uriBuilder.path("/users/{id}").buildAndExpand(user.getId()).toUri();
