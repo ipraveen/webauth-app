@@ -1,8 +1,8 @@
 package com.myapp.store.controllers;
 
 import com.myapp.store.config.JwtConfig;
-import com.myapp.store.dtos.JwtResponse;
 import com.myapp.store.dtos.LoginDto;
+import com.myapp.store.dtos.LoginResponse;
 import com.myapp.store.dtos.UserDto;
 import com.myapp.store.mappers.UserMapper;
 import com.myapp.store.repositories.UserRepository;
@@ -31,7 +31,7 @@ public class AuthController {
     private final JwtConfig jwtConfig;
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login(@Valid @RequestBody LoginDto loginDto, HttpServletResponse response) {
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginDto loginDto, HttpServletResponse response) {
         System.out.println("Inside login");
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
@@ -60,12 +60,11 @@ public class AuthController {
         cookie.setSecure(true);
 
         response.addCookie(cookie);
-
-        return ResponseEntity.ok(new JwtResponse(token));
+        return ResponseEntity.ok(new LoginResponse( user.getName(), user.getRoles(), token));
     }
 
     @GetMapping("/refresh")
-    public ResponseEntity<JwtResponse> refresh(@CookieValue("refresh_token") String refreshToken) {
+    public ResponseEntity<LoginResponse> refresh(@CookieValue("refresh_token") String refreshToken) {
         if (!jwtService.validateToken(refreshToken)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -75,7 +74,7 @@ public class AuthController {
         var userId = jwtService.getIdFromToken(refreshToken);
         var user = userRepository.findById(userId).orElseThrow();
         var accessToken = jwtService.generateAccessToken(user);
-        return ResponseEntity.ok(new JwtResponse(accessToken));
+        return ResponseEntity.ok(new LoginResponse( user.getName(), user.getRoles(), accessToken));
 
     }
 

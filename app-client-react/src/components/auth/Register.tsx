@@ -9,10 +9,10 @@ const RegisterForm: React.FC = () => {
     const userNameRef = useRef<HTMLInputElement>(null);
 
     const [formData, setFormData] = useState<UserForm>({
-        name: 'user01',
-        email: 'user01@email.com',
-        password: 'Abc123',
-        confirmPassword: 'Abc123',
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
     });
 
     const [errors, setErrors] = useState<Record<string, string[]>>({});
