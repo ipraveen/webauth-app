@@ -1,4 +1,4 @@
-import { useAuth } from '@/context/useAuth';
+import { useAuth } from '@/auth/hooks/useAuth';
 import { Link } from 'react-router-dom';
 export default function Header() {
     const authCtx = useAuth();
@@ -9,7 +9,7 @@ export default function Header() {
                 <nav style={{ display: 'flex', gap: '1rem' }}>
                     <Link to="/">Home</Link>
                       <Link to="/dashboard">Dashboard</Link>
-                    {authCtx.auth?.role === 'ADMIN' && <Link to="/admin">Admin</Link>}
+                    {authCtx.auth?.roles.includes('ADMIN') && <Link to="/admin">Admin</Link>}
                 </nav>
                 <button
                     onClick={authCtx.logout}

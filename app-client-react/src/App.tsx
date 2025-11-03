@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Dashboard from '@/pages/Dashboard.tsx';
 import Admin from '@/pages/Admin';
 import NotFound from '@/pages/NotFound';
-import { AuthProvider } from '@/context/AuthProvider.tsx';
+import { AuthProvider } from '@/auth/context/AuthProvider';
 import RequiredAuthOutlet from '@/pages/outlets/RequiredAuthOutlet';
 import Home from './pages/Home';
 
@@ -16,11 +16,11 @@ function App() {
                     <Route path="/login" element={<SignIn />} />
                     <Route path="/register" element={<RegisterForm />} />
 
-                    <Route element={<RequiredAuthOutlet />}>
+                    <Route element={<RequiredAuthOutlet allowedRoles={['USER', 'ADMIN']} />}>
                         <Route path="/" element={<Home />} />
-                         <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/dashboard" element={<Dashboard />} />
                     </Route>
-                    <Route element={<RequiredAuthOutlet role='ADMIN' />}>
+                    <Route element={<RequiredAuthOutlet allowedRoles={['ADMIN']} />}>
                         <Route path="/admin" element={<Admin />} />
                     </Route>
 

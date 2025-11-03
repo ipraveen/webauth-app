@@ -58,7 +58,6 @@ public class SecurityConfig {
 
         return http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                // ✅ Disable CSRF for APIs
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(c -> {
                     c.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -66,7 +65,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests -> {
                     authorizeRequests
-                            .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                            // .requestMatchers(HttpMethod.POST, "/users").permitAll()
                             .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                             .requestMatchers(HttpMethod.GET, "/auth/refresh").permitAll()
                             .requestMatchers("/admin/**").hasRole(Role.ADMIN.name())
@@ -84,6 +83,8 @@ public class SecurityConfig {
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
+
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;

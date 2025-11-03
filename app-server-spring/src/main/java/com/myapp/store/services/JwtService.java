@@ -1,6 +1,7 @@
 package com.myapp.store.services;
 
 import com.myapp.store.config.JwtConfig;
+import com.myapp.store.entities.Roles;
 import com.myapp.store.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -10,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @Service
@@ -19,11 +21,12 @@ public class JwtService {
 
     private String generateJwtToken(User user, long duration) {
 
+        List<String> roles = user.getRoles().stream().map(Roles::getName).toList();
         return Jwts.builder()
                 .subject(user.getId().toString())
                 .claim("email", user.getEmail())
                 .claim("name", user.getName())
-                .claim("role", user.getRoles())
+                .claim("roles", roles)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + (duration * 1000)))
                 .signWith(Keys.hmacShaKeyFor(jwtConfig.getSecret().getBytes()))
@@ -43,6 +46,8 @@ public class JwtService {
 
         try {
             var claims = getJwtClaim(token);
+            System.out.println("getExpiration: " + claims.getExpiration());
+            System.out.println("getExpiration: Test: " + claims.getExpiration().after(new Date()));
             return claims.getExpiration().after(new Date());
         } catch (JwtException e) {
             return false;

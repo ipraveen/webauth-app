@@ -2,5 +2,5 @@ package com.myapp.store.entities;
 
 public enum Role
 {
-    USER, ADMIN
+    USER, ADMIN, MANAGER
 }

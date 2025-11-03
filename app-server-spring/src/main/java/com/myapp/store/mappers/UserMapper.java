@@ -12,8 +12,8 @@ import org.mapstruct.MappingTarget;
 public interface UserMapper {
 
     @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(target = "roles", expression = "java(user.getRoles().stream().map(com.myapp.store.entities.Roles::getName).toList())")
     UserDto toDto(User user);
-
 
     User toEntity(UserCreateRequestDto request);
 

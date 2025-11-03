@@ -30,9 +30,14 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "roles" )
-    @Enumerated(EnumType.STRING)
-    private Role roles;
+    // Many-to-Many relationship with Role
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Roles> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     @Builder.Default
@@ -69,5 +74,14 @@ public class User {
                 "id = " + id + ", " +
                 "name = " + name + ", " +
                 "email = " + email + ")";
+    }
+
+
+    public void addRole(Roles role) {
+
+        if(this.roles == null){
+            this.roles = new HashSet<>();
+        }
+        this.roles.add(role);
     }
 }

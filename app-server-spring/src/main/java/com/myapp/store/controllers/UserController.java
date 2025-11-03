@@ -5,7 +5,9 @@ import com.myapp.store.dtos.UserCreateRequestDto;
 import com.myapp.store.dtos.UserDto;
 import com.myapp.store.dtos.UserUpdateRequestDto;
 import com.myapp.store.entities.Role;
+import com.myapp.store.entities.Roles;
 import com.myapp.store.mappers.UserMapper;
+import com.myapp.store.repositories.RoleRepository;
 import com.myapp.store.repositories.UserRepository;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -28,6 +30,8 @@ import java.util.Set;
 public class UserController {
     private final UserRepository userRepository;
 
+    private final RoleRepository roleRepository;
+
     private final UserMapper userMapper;
 
     private final PasswordEncoder passwordEncoder;
@@ -35,14 +39,22 @@ public class UserController {
     @GetMapping
     public List<UserDto> getAllUsers(@RequestParam(required = false, defaultValue = "", name = "sort") String sort) {
 
-        if (!Set.of("name", "email").contains(sort)) {
-            sort = "name";
-        }
+        try {
 
-        return userRepository.findAll(Sort.by(sort))
-                .stream()
-                .map(user -> userMapper.toDto(user))
-                .toList();
+
+            if (!Set.of("name", "email").contains(sort)) {
+                sort = "name";
+            }
+
+            return userRepository.findAll(Sort.by(sort))
+                    .stream()
+                    .map(user -> userMapper.toDto(user))
+                    .toList();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+
+        }
+        return null;
     }
 
     @GetMapping("/{id}")
@@ -65,7 +77,12 @@ public class UserController {
         var userEntity = userMapper.toEntity(userCreateRequestDto);
 
         userEntity.setPassword(passwordEncoder.encode(userCreateRequestDto.getPassword()));
-        userEntity.setRoles(Role.USER);
+        Roles userRole = roleRepository.findByName(Role.USER.name());
+        log.info("Assigning Role: {} ", userRole);
+
+        if (userRole != null) {
+            userEntity.addRole(userRole);
+        }
 
         var user = userRepository.save(userEntity);
         var uri = uriBuilder.path("/users/{id}").buildAndExpand(user.getId()).toUri();

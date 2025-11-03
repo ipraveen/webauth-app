@@ -3,7 +3,7 @@ import z from 'zod';
 import { signInSchema as schema } from './schema';
 import axios from '@/api/axios';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/context/useAuth';
+import { useAuth } from '@/auth/hooks/useAuth';
 
 type SignInForm = z.infer<typeof schema>;
 
@@ -48,9 +48,8 @@ const SignIn: React.FC = () => {
             });
             console.log('SignIn:', response);
             if (response?.data) {
-                const { token, role, name } = response.data;
-                console.log('Auth: ', { token, role, name });
-                setAuth({ token, role, name });
+                setAuth(response.data);
+                localStorage.setItem('AUTH_STATE', JSON.stringify(response.data));
                 navigate('/');
             }
         } catch (error) {
