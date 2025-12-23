@@ -9,8 +9,8 @@ spring:
     show-sql: true
   jwt:
     secret: ${JWT_SECRET}
-    accessTokenExp: 30 #5m
-    refreshTokenExp: 600 #10m
+    accessTokenExp: 600 #5m
+    refreshTokenExp: 1800 #10m
   flyway:
     enabled: true
     locations: classpath:db/migration

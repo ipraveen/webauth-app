@@ -1,0 +1,36 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: adminadmin
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  otel-collector:
+      image: otel/opentelemetry-collector-contrib:latest
+      command: ["--config=/etc/otel-collector-config.yaml"]
+      volumes:
+        - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+      ports:
+        - "4317:4317" # OTLP gRPC receiver
+        - "4318:4318" # OTLP http receiver
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "6831:6831/udp" # UDP port for Jaeger agent
+      - "16686:16686" # Web UI
+      - "14268:14268" # HTTP port for spans
+      - "14250:14268" # HTTP port for spans
+volumes:
+  mysql_data:

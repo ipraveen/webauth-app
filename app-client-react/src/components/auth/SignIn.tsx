@@ -39,6 +39,10 @@ const SignIn: React.FC = () => {
         }
     }, [formData]);
 
+    const navigateToRegister = () => {
+        navigate('/register');
+    };
+
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         try {
@@ -98,6 +102,14 @@ const SignIn: React.FC = () => {
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-md transition"
                 >
                     SignIn
+                </button>
+                <div className='text-center text-gray-700'>OR</div>
+                <button
+                    type="button"
+                    className="w-full bg-gray-600 hover:bg-gray-700 text-white p-2 rounded-md transition"
+                    onClick={navigateToRegister}
+                >
+                    Register
                 </button>
             </form>
 

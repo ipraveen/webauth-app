@@ -1,0 +1,24 @@
+{
+    "name": "backend",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "start": "ts-node ./src/server.ts",
+        "start:prod": "node ./dist/server.js"
+    },
+    "dependencies": {
+        "@opentelemetry/auto-instrumentations-node": "0.67.0",
+        "@opentelemetry/exporter-trace-otlp-grpc": "0.208.0",
+        "@opentelemetry/sdk-node": "0.208.0",
+        "@types/express": "5.0.5",
+        "@types/node": "24.10.1",
+        "cors": "2.8.5",
+        "express": "5.1.0",
+        "node-fetch": "3.3.2",
+        "ts-node": "10.9.2",
+        "typescript": "5.9.3"
+    },
+    "devDependencies": {
+        "@types/cors": "2.8.19"
+    }
+}

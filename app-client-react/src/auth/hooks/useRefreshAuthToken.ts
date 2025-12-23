@@ -11,9 +11,6 @@ export const useRefreshAuthToken = () => {
 
         setAuth((prev: Auth) => {
             const { token } = response.data;
-            console.log('==> Expired Token: ', prev.token);
-            console.log('==> Refresh Token: ', token);
-
             return { ...prev, token };
         });
 

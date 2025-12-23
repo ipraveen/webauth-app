@@ -65,7 +65,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests -> {
                     authorizeRequests
-                            // .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                            .requestMatchers( "/carts/**").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/users").permitAll()
                             .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                             .requestMatchers(HttpMethod.GET, "/auth/refresh").permitAll()
                             .requestMatchers("/admin/**").hasRole(Role.ADMIN.name())
