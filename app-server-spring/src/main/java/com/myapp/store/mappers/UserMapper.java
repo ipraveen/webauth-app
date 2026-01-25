@@ -11,7 +11,7 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
+    // @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "roles", expression = "java(user.getRoles().stream().map(com.myapp.store.entities.Roles::getName).toList())")
     UserDto toDto(User user);
 

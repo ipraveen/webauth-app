@@ -1,14 +1,18 @@
 import { useAuth } from '@/auth/hooks/useAuth';
 import { Link } from 'react-router-dom';
+
 export default function Header() {
     const authCtx = useAuth();
+    
     return (
         <header>
-            <h1>Welcome, {authCtx.auth?.name}</h1>
-            <div className='nav-section'>
+            <div className='flex flex-col'>
+                <Link to="/">Store</Link>
+                <small className='text-xs text-gray-300'>Welcome, {authCtx.auth?.name}</small>
+            </div>
+
+            <div className="nav-section">
                 <nav style={{ display: 'flex', gap: '1rem' }}>
-                    <Link to="/">Home</Link>
-                      <Link to="/dashboard">Dashboard</Link>
                     {authCtx.auth?.roles.includes('ADMIN') && <Link to="/admin">Admin</Link>}
                 </nav>
                 <button

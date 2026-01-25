@@ -2,15 +2,13 @@
 
 :root {
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-    color-scheme: light dark;
+    color-scheme: light;
 }
 
-main {
-    width: 800px;
+.container {
+    width: 1200px;
     margin: 1rem auto;
     padding: 1rem;
-    background-color: aliceblue;
-    height: 80vh;
 }
 
 h1.title {

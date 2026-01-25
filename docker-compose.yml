@@ -18,19 +18,14 @@ services:
       timeout: 5s
       retries: 5
   otel-collector:
-      image: otel/opentelemetry-collector-contrib:latest
+      image: otel/opentelemetry-collector:0.120.0
+      container_name: otel-collector
+      restart: always
       command: ["--config=/etc/otel-collector-config.yaml"]
       volumes:
-        - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+        - ./otel-config/otel-collector-config.yaml:/etc/otel-collector-config.yaml
+        - ./otel-config/telemetry-data.json:/etc/telemetry-data.json
       ports:
-        - "4317:4317" # OTLP gRPC receiver
         - "4318:4318" # OTLP http receiver
-  jaeger:
-    image: jaegertracing/all-in-one:latest
-    ports:
-      - "6831:6831/udp" # UDP port for Jaeger agent
-      - "16686:16686" # Web UI
-      - "14268:14268" # HTTP port for spans
-      - "14250:14268" # HTTP port for spans
 volumes:
   mysql_data:

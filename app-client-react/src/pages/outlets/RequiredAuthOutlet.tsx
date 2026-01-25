@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/auth/hooks/useAuth';
-import Header from '../parts/Header';
+import Header from '../panels/Header';
 
 interface Props {
     allowedRoles?: string[];

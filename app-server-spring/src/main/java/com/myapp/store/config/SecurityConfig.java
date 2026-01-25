@@ -66,6 +66,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests -> {
                     authorizeRequests
                             .requestMatchers( "/carts/**").permitAll()
+                            .requestMatchers( "/actuator/**").permitAll()
                             .requestMatchers(HttpMethod.POST, "/users").permitAll()
                             .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                             .requestMatchers(HttpMethod.GET, "/auth/refresh").permitAll()

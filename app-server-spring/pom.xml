@@ -29,7 +29,24 @@
     <properties>
         <java.version>23</java.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.opentelemetry.instrumentation</groupId>
+                <artifactId>opentelemetry-instrumentation-bom</artifactId>
+                <version>2.13.3</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
+        <dependency>
+            <groupId>io.opentelemetry.instrumentation</groupId>
+            <artifactId>opentelemetry-spring-boot-starter</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -109,6 +126,10 @@
             <groupId>me.paulschwarz</groupId>
             <artifactId>spring-dotenv</artifactId>
             <version>4.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
     </dependencies>
 

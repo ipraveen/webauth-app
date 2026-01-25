@@ -6,6 +6,7 @@ import com.myapp.store.entities.Product;
 import com.myapp.store.mappers.ProductMapper;
 import com.myapp.store.repositories.ProductRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 @AllArgsConstructor
+@Slf4j
 public class ProductController {
 
 
@@ -23,6 +25,7 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<ProductDto>> getAllProduct(@RequestParam(required = false) Long categoryId) {
 
+        log.info("Fetching all Products. Optional categoryId: {}", categoryId);
         List<Product> products = null;
         if (categoryId == null) {
             products = productRepository.findAllWithCategory();

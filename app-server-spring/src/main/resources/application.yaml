@@ -1,3 +1,10 @@
+server:
+  port: 8080
+management:
+    endpoints:
+      web:
+        exposure:
+          include: metrics
 spring:
   application:
     name: store
@@ -10,7 +17,22 @@ spring:
   jwt:
     secret: ${JWT_SECRET}
     accessTokenExp: 600 #5m
-    refreshTokenExp: 1800 #10m
+    refreshTokenExp: 86400 #1 Day
   flyway:
     enabled: true
     locations: classpath:db/migration
+otel:
+  instrumentation:
+    micrometer:
+      enabled: true
+  service:
+    name: "store"
+  exporter:
+    otlp:
+      endpoint: "http://localhost:4318"
+      logging:
+        enabled: true
+      metrics:
+        enabled: true
+      traces:
+        enabled: true
