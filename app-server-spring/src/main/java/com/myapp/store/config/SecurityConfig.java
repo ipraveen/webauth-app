@@ -67,6 +67,7 @@ public class SecurityConfig {
                     authorizeRequests
                             .requestMatchers( "/carts/**").permitAll()
                             .requestMatchers( "/actuator/**").permitAll()
+                            .requestMatchers( "/products/**").permitAll()
                             .requestMatchers(HttpMethod.POST, "/users").permitAll()
                             .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                             .requestMatchers(HttpMethod.GET, "/auth/refresh").permitAll()
@@ -76,7 +77,6 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

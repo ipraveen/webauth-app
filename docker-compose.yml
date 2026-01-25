@@ -27,5 +27,56 @@ services:
         - ./otel-config/telemetry-data.json:/etc/telemetry-data.json
       ports:
         - "4318:4318" # OTLP http receiver
+  grafana:
+    image: grafana/grafana:11.5.2
+    container_name: grafana
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    ports:
+      - "3000:3000"
+
+  mimir-1:
+    image: grafana/mimir:2.14.3
+    command: [ "-config.file=/etc/mimir.yaml" ]
+    container_name: mimir-1
+    hostname: mimir-1
+    volumes:
+      - ./otel-config/mimir.yaml:/etc/mimir.yaml
+    ports:
+      - "8080:8080"
+
+  mimir-2:
+    image: grafana/mimir:2.14.3
+    command: [ "-config.file=/etc/mimir.yaml" ]
+    container_name: mimir-2
+    hostname: mimir-2
+    volumes:
+      - ./otel-config/mimir.yaml:/etc/mimir.yaml
+
+  mimir-3:
+    image: grafana/mimir:2.14.3
+    command: [ "-config.file=/etc/mimir.yaml" ]
+    container_name: mimir-3
+    hostname: mimir-3
+    volumes:
+      - ./otel-config/mimir.yaml:/etc/mimir.yaml
+
+  tempo:
+    image: grafana/tempo:2.7.1
+    container_name: tempo
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    ports:
+      - "3200:3200"
+    volumes:
+      - ./otel-config/tempo.yaml:/etc/tempo.yaml
+
+  loki:
+    image: grafana/loki:3.4.2
+    container_name: loki
+    environment:
+      - LOKI_STORAGE_BACKEND=memory
+    ports:
+      - "3100:3100"
 volumes:
   mysql_data:

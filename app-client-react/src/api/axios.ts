@@ -4,12 +4,13 @@ export { type AxiosResponse } from 'axios';
 
 // axios.defaults.withCredentials = true
 
+const PORT = '8881';
 const api = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: `http://localhost:${PORT}`,
 });
 
 export const axiosPrivate = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: `http://localhost:${PORT}`,
     headers: {
         'Content-Type': 'application/json',
     },

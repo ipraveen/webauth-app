@@ -17,8 +17,14 @@ docker compose up
 
 
 
-## Logs
+## Docker Commands
 ```
+
+# check logs of a container
 docker compose logs -f otel-collector
+
+
+# stop container and remove volume
+docker compose rm -s -v otel-collector
 ```
 
